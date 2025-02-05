@@ -1,52 +1,24 @@
 import { motion } from 'framer-motion'
-import { FaCode, FaCube, FaPalette } from 'react-icons/fa'
-import AnimatedBackground from './AnimatedBackground'
+import { FaCode, FaCube, FaPalette, FaEye, FaExternalLinkAlt } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { projects } from '../JsonData/ProjectData'
 
 function PortfolioSection() {
-  const projects = [
-    {
-      title: "Sci-Fi Character Model",
-      category: "3D Modeling",
-      description: "Detailed character model created for a sci-fi game project",
-      icon: <FaCube className="w-8 h-8" />,
-      imageUrl: "https://picsum.photos/800/600"
-    },
-    {
-      title: "Interactive Web Experience",
-      category: "Web Development", 
-      description: "3D web experience built with Three.js and React",
-      icon: <FaCode className="w-8 h-8" />,
-      imageUrl: "https://picsum.photos/800/600"
-    },
-    {
-      title: "Fantasy Environment",
-      category: "3D Art",
-      description: "Stylized environment design for an indie game",
-      icon: <FaPalette className="w-8 h-8" />,
-      imageUrl: "https://picsum.photos/800/600"
-    }
-  ]
+  const [hoveredId, setHoveredId] = useState(null)
 
   return (
-    <section id="portfolio" className="min-h-screen py-20 bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900 relative overflow-hidden">
-      <AnimatedBackground />
-      
-      {/* Floating Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute w-72 h-72 bg-purple-500/30 rounded-full blur-3xl animate-blob"></div>
-        <div className="absolute w-72 h-72 bg-blue-500/30 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute w-72 h-72 bg-pink-500/30 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        <motion.div
+    <section id="portfolio" className="min-h-screen py-20 bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900">
+       
+      <div className="container mx-auto px-4">
+      <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
           <div className="inline-block px-4 py-2 bg-white/10 backdrop-blur-lg rounded-full mb-6">
-            <span className="text-sm font-medium">My Work</span>
+            <span className="text-sm font-medium text-white">My Work</span>
           </div>
           <h2 className="text-4xl font-bold text-white mb-4">
             Featured
@@ -58,40 +30,83 @@ function PortfolioSection() {
             Showcasing my best work in 3D modeling and design
           </p>
         </motion.div>
-
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {projects.map((project, index) => (
             <motion.div
-              key={index}
+              key={project.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm 
-                         border border-white/10 hover:bg-white/10 transition-colors"
+              className="group relative bg-white/5 backdrop-blur-sm rounded-2xl 
+                         overflow-hidden border border-white/10 
+                         hover:border-purple-500/50 transition-all duration-300
+                         flex flex-col h-full"
             >
-              <div className="aspect-w-16 aspect-h-9 relative">
+              {/* Image Container */}
+              <div className="aspect-w-16 aspect-h-9 relative overflow-hidden">
                 <img 
                   src={project.imageUrl}
                   alt={project.title}
-                  className="object-cover w-full h-full rounded-t-2xl"
+                  className="object-cover w-full h-full transition-transform duration-300
+                           group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 
-                              transition-opacity flex items-center justify-center">
-                  <div className="text-purple-400 transform scale-0 group-hover:scale-100 
-                                transition-transform">
-                    {project.icon}
-                  </div>
+                
+                {/* Overlay on Hover */}
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100
+                              transition-opacity duration-300 flex items-center justify-center">
+                  <Link 
+                    to={`/project/${project.id}`}
+                    className="p-3 bg-white/10 backdrop-blur-sm rounded-full
+                             text-white hover:bg-white/20 transition-colors duration-200"
+                    aria-label={`View ${project.title} details`}
+                  >
+                    <FaEye className="w-6 h-6" />
+                  </Link>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-                <p className="text-purple-400 text-sm mb-2">{project.category}</p>
-                <p className="text-gray-400">{project.description}</p>
+
+              {/* Content Section */}
+              <div className="p-6 flex flex-col flex-grow">
+                {/* Category Badge */}
+                <div className="mb-3">
+                  <span className="px-3 py-1 bg-purple-500/20 rounded-full text-sm text-purple-400">
+                    {project.category}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-purple-400 
+                             transition-colors duration-300">
+                  {project.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-400 text-sm mb-4 line-clamp-2 flex-grow">
+                {project.description.slice(0, 120) + '...'}
+                </p>
+
+                {/* View Project Button */}
+                <Link 
+                  to={`/project/${project.id}`}
+                  className="inline-flex items-center justify-center w-full px-4 py-2
+                           bg-gradient-to-r from-purple-500 to-pink-500 
+                           hover:from-purple-600 hover:to-pink-600
+                           text-white rounded-lg transition-colors duration-300
+                           mt-auto"
+                >
+                  <span>View Project</span>
+                  <FaExternalLinkAlt className="ml-2 w-4 h-4" />
+                </Link>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

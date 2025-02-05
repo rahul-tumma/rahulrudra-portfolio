@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FaGithub, FaLinkedin } from 'react-icons/fa'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const navigate = useNavigate()
+  const location = useLocation()
 
   // Handle scroll and section detection
   useEffect(() => {
@@ -32,6 +35,23 @@ function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // When route changes, scroll to section if hash exists
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.querySelector(location.hash)
+      if (element) {
+        const offset = 80
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY
+        const offsetPosition = elementPosition - offset
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }
+    }
+  }, [location])
+
   const navItems = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
@@ -40,22 +60,10 @@ function Navbar() {
     { name: 'Contact', href: '#contact' }
   ]
 
-  // Smooth scroll function
-  const scrollToSection = (e, href) => {
+  // Navigate and scroll function
+  const handleNavigation = (e, href) => {
     e.preventDefault()
-    const element = document.querySelector(href)
-    if (!element) return // Guard clause if element not found
-    
-    const offset = 80 // Height of fixed navbar
-    const elementPosition = element.getBoundingClientRect().top + window.scrollY
-    const offsetPosition = elementPosition - offset
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    })
-
-    // Close mobile menu if open
+    navigate('/' + href)
     setIsMobileMenuOpen(false)
   }
 
@@ -72,11 +80,11 @@ function Navbar() {
           {/* Logo */}
           <motion.a
             href="#home"
-            onClick={(e) => scrollToSection(e, '#home')}
+            onClick={(e) => handleNavigation(e, '#home')}
             className="text-2xl font-bold text-white"
             whileHover={{ scale: 1.05 }}
           >
-            RR<span className="text-purple-400">.</span>
+            Rahul Rudra<span className="text-purple-400">.</span>
           </motion.a>
 
           {/* Desktop Navigation */}
@@ -85,7 +93,7 @@ function Navbar() {
               <a
                 key={item.name}
                 href={item.href}
-                onClick={(e) => scrollToSection(e, item.href)}
+                onClick={(e) => handleNavigation(e, item.href)}
                 className={`relative text-sm font-medium transition-colors duration-300
                   ${activeSection === item.href.slice(1) 
                     ? 'text-white' 
@@ -133,7 +141,7 @@ function Navbar() {
               <a
                 key={item.name}
                 href={item.href}
-                onClick={(e) => scrollToSection(e, item.href)}
+                onClick={(e) => handleNavigation(e, item.href)}
                 className={`block py-3 px-4 transition-colors duration-300 rounded-lg
                   ${activeSection === item.href.slice(1)
                     ? 'text-white bg-white/10'

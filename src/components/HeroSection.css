@@ -1,9 +1,10 @@
+/* Remove or comment out these cursor styles */
 .canvas-container {
-  cursor: grab;
+  /* cursor: grab; */
 }
 
 .canvas-container:active {
-  cursor: grabbing;
+  /* cursor: grabbing; */
 }
 
 .model-container {
@@ -21,12 +22,13 @@
   transition: all 0.3s ease;
 }
 
+/* Remove or comment out these cursor styles */
 .model-container canvas {
-  cursor: grab;
+  /* cursor: grab; */
 }
 
 .model-container canvas:active {
-  cursor: grabbing;
+  /* cursor: grabbing; */
 }
 
 /* Prevent any default touch behaviors */

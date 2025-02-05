@@ -24,7 +24,8 @@ function AboutSection() {
             <div className="relative floating">
               <div className="w-full max-w-[500px] sm:max-w-[600px] md:max-w-[750px] mx-auto aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden glass">
                 <img
-                  src="https://picsum.photos/800/800"
+                 
+                  src="/assets/IMG_1707.jpg"
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
@@ -67,10 +68,10 @@ function AboutSection() {
               {/* Stats with enhanced styling */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 {[
-                  { number: "3+", text: "Years Experience" },
-                  { number: "50+", text: "Projects Delivered" },
-                  { number: "5+", text: "Technologies" },
-                  { number: "100%", text: "Commitment" }
+                  { number: "5+", text: "Years Experience" },
+                  { number: "100%", text: "Dedication" },
+                  { number: "24/7", text: "Creative Mind" },
+                  { number: "∞", text: "Passion" }
                 ].map((item, index) => (
                   <motion.div
                     key={index}

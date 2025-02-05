@@ -28,3 +28,13 @@
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
+/* Add this after your existing styles */
+* {
+  cursor: none !important;
+}
+
+/* Update these selectors to override any cursor styles */
+a, button, input, [role="button"], .clickable {
+  cursor: none !important;
+}
